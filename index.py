@@ -289,3 +289,5 @@ with col2:
 # 하단: 데이터 상세 정보
 with st.expander("📄 데이터 상세 보기"):
     st.dataframe(filtered_df, use_container_width=True)
+
+# 수정?
