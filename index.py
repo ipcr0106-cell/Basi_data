@@ -70,6 +70,13 @@ def set_korean_font():
         pass
     plt.rcParams['axes.unicode_minus'] = False
 set_korean_font()
+def check_files():
+    required_files = ["baci_85_only.csv", "country_codes_V202501.csv"]
+    for f in required_files:
+        if not os.path.exists(f):
+            st.error(f"⚠️ 파일이 없습니다: {f}. 파일 이름을 확인하거나 같은 폴더에 넣어주세요.")
+            return False
+    return True
 print("------------------------------------------------------")
 
 # 연도별 total value(금액) 막대그래프로 그리기
@@ -102,11 +109,14 @@ import numpy as np
 import platform
 
 # 1. 한글 폰트 설정
-if platform.system() == 'Windows':
-    plt.rcParams['font.family'] = 'Malgun Gothic'
-else:
-    plt.rcParams['font.family'] = 'AppleGothic'
-plt.rcParams['axes.unicode_minus'] = False
+st.title("🚀 무역 데이터 분석 시스템")
+
+if check_files():
+    df = load_data()
+    
+    # (여기서부터는 기존 그래프 그리는 코드와 동일)
+    st.sidebar.header("설정")
+    top_n = st.sidebar.slider("국가 수", 5, 20, 10)
 
 # 2. 트리맵 레이아웃 알고리즘 (가중치 기반 분할)
 def treemap_layout(values, x, y, w, h):
