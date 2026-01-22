@@ -39,7 +39,7 @@ print(len(baci_hs))
 # j를 국가이름으로 바꾸기(merge, mapping)
 baci_country=baci_country.rename(columns={'country_code':"j"}) # country code 컬럼 명을 j로 바꿔주기
 baci_final=pd.merge(baci_hs,baci_country,on="j",how="left") # j열로 병합, 왼쪽 기준
-print(baci_final)
+# print(baci_final)
 # i를 대한민국으로 바꾸기
 
 # t(연도)를 랜덤하게 바꾸기
@@ -47,8 +47,8 @@ years = [2021, 2022, 2023]
 baci_final['t'] = np.random.choice(years, size=len(baci_final))
 
 # 3. 결과 확인
-print(baci_final['t'].value_counts()) # 각 연도별로 데이터가 잘 분산되었는지 확인
-print(baci_final.head())
+# print(baci_final['t'].value_counts()) # 각 연도별로 데이터가 잘 분산되었는지 확인
+# print(baci_final.head())
 
 # 4. 변경된 데이터 저장 (필요 시)
 # df.to_csv('baci_85_randomized.csv', index=False)
@@ -56,13 +56,20 @@ print(baci_final.head())
 
 print("------------------------------------------------------")
 
-# 1. 한글 깨짐 방지 설정 (OS별 자동 설정)
-if platform.system() == 'Windows':
-    plt.rcParams['font.family'] = 'Malgun Gothic'
-elif platform.system() == 'Darwin': # Mac
-    plt.rcParams['font.family'] = 'AppleGothic'
-else: # Linux (Colab 등)
-    plt.rcParams['font.family'] = 'NanumGothic'
+# 1. 폰트 설정 (오류 방지를 위한 안전한 예외 처리)
+def set_korean_font():
+    try:
+        if platform.system() == 'Windows':
+            plt.rcParams['font.family'] = 'Malgun Gothic'
+        elif platform.system() == 'Darwin':
+            plt.rcParams['font.family'] = 'AppleGothic'
+        else:
+            # 리눅스/클라우드 환경에서는 폰트가 없을 수 있으므로 기본 폰트 사용
+            plt.rcParams['font.family'] = 'sans-serif'
+    except:
+        pass
+    plt.rcParams['axes.unicode_minus'] = False
+set_korean_font()
 print("------------------------------------------------------")
 
 # 연도별 total value(금액) 막대그래프로 그리기
